@@ -1,0 +1,49 @@
+kubectl create -f - <<EOF
+apiVersion: v1
+kind: Service
+metadata:
+  name: servicea
+  labels:
+    app: servicea
+    service: servicea
+spec:
+  ports:
+  - port: 8081
+    name: http
+  selector:
+    app: servicea
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: servicea
+  labels:
+    account: servicea
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: servicea-v1
+  labels:
+    app: servicea
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: servicea
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: servicea
+        version: v1
+    spec:
+      serviceAccountName: servicea
+      containers:
+      - name: servicea
+        image: docker.io/yangrenzhi123/servicea:0.0.1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8081
+EOF
