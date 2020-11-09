@@ -1,4 +1,3 @@
-kubectl create -f - <<EOF
 apiVersion: v1
 kind: Service
 metadata:
@@ -46,4 +45,3 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 8081
-EOF
